@@ -4,13 +4,35 @@ public class Branch {
     private static final int NUM_OF_PARENTS = 2;
     private Person[] parents; //index 0 = dad, index 1 = mom
     private ArrayList<Person> children;
+    private ArrayList<Branch> childBranches;
 
-
-    public Branch(Person[] r, ArrayList<Person> c) {
-        parents = r;
+    public Branch(Person[] p, ArrayList<Person> c) {
+        parents = p;
         parents[0].setSpouse(parents[1]);
         parents[1].setSpouse(parents[0]);
         children = c;
+        if(c != null && c.size() > 0) {
+            for (int i = 0; i < c.size(); i++) {
+                Person child = c.get(i);
+                if(child.getChildren().size() > 0) {
+                    Person[] ps;
+                    ArrayList<Person> cs = new ArrayList<>();
+                    for (int j = 0; j < NUM_OF_PARENTS; j++) {
+                        if(child.getGender().equals(Person.getMaleGender())) {
+                            ps = new Person[] {child, child.getSpouse()};
+                        } else {
+                            ps = new Person[] {child.getSpouse(), child};
+                        }
+                    }
+                    for (int j = 0; j < child.getChildren().size(); j++) {
+                        cs.add(child.getChildren().get(j));
+                    }
+                    childBranches.add(new Branch(ps, cs));
+                } else {
+                    childBranches.add(null);
+                }
+            }
+        }
     }
 
     public Branch(ArrayList<Person> c) {
