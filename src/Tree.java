@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -93,3 +94,8 @@ public class Tree {
     }
 
 }
+=======
+public class Tree {
+    
+}
+>>>>>>> 6c2e86786972329ec8f0e62a61968f80da420f63
