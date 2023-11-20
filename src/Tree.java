@@ -1,79 +1,71 @@
-<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Tree {
-    private ArrayList<Tree> childTrees; //index of child = index of child tree
-    private Person[] parents;
-    private ArrayList<Person> children;
 
-    public Tree(ArrayList<Tree> childTrees, Person[] parents, ArrayList<Person> children) {
-        this.childTrees = childTrees;
-        this.parents = parents;
-        this.children = children;
+    private ArrayList<Tree> childrenTrees;
+    private ArrayList<Person> children;
+    private Person[] parents;
+
+    public Tree(Person m, Person d, ArrayList<Person> c, ArrayList<Tree> ct) {
+        parents = new Person[] { d, m };
+        children = c;
+        childrenTrees = ct;
+    }
+
+    public Tree(Person[] p, ArrayList<Person> c, ArrayList<Tree> ct) {
+        parents = p;
+        children = c;
+        childrenTrees = ct;
     }
 
     public Tree() {
         parents = new Person[2];
-        childTrees = new ArrayList<>();
         children = new ArrayList<>();
     }
 
-    public Tree getNext() {
-        return next;
-    }
-
-    public void setNext(Tree next) {
-        this.next = next;
-    }
-
-    public Person[] getParents() {
-        return parents;
-    }
-
-    public void setParents(Person[] parents) {
-        this.parents = parents;
-    }
-
-    public void setParent(int i, Person p) {
-        parents[i] = p;
+    public void addChild(Person child) {
+        children.add(child);
+        
+        int childIndex = children.indexOf(child);
+        Tree childTree = new Tree();
+        childTree.setParents(new Person[] { child, child.getSpouse() });
+        for (int i = 0; i < child.getChildren().size(); i++) {
+            childTree.addChild(child.getChildren().get(i));
+        }
+        childrenTrees.set(childIndex, childTree);
     }
 
     public ArrayList<Person> getChildren() {
-        return children;
-    }
-
-    public void addChild(Person c) {
-        children.add(c);
+        return this.children;
     }
 
     public void setChildren(ArrayList<Person> children) {
         this.children = children;
     }
 
+    public Person[] getParents() {
+        return this.parents;
+    }
+
+    public void setParents(Person[] parents) {
+        this.parents = parents;
+    }
+
+    public ArrayList<Tree> getChildrenTrees() {
+        return childrenTrees;
+    }
+
+    public void setChildrenTrees(ArrayList<Tree> childrenTrees) {
+        this.childrenTrees = childrenTrees;
+    }
+
     public String getPrintable() {
         String res = "";
-        for (int i = 0; i < parents.length; i++) {
-            if (parents[i] != null) {
-                res += parents[i].toString();
-                if (i != parents.length - 1) {
-                    res += " ------- ";
-                }
-            }
-
-        }
-        char space = 32;
-        for (int i = 0; i < parents[0].toString().length() + 3; i++) {
-            res += space;
-        }
-        res += "|";
+        res += parents[0] + " ------- " + parents[1];
         res += "\n";
-        for (int i = 0; i < parents[0].toString().length() + 3; i++) {
-            res += space;
-        }
-        res += "V\n";
         for (int i = 0; i < children.size(); i++) {
-            res += children.get(i).toString();
+            res += children.get(i);
             if (i != children.size() - 1) {
                 res += " --- ";
             }
@@ -83,19 +75,19 @@ public class Tree {
 
     public Person getInput() {
         Scanner in = new Scanner(System.in);
-        System.out.println("Input name");
-        String name = in.nextLine();
-        System.out.println("Input age");
+        System.out.println("Enter name");
+        String name = in.next();
+        System.out.println("Enter age");
         int age = in.nextInt();
-        System.out.println("Input gender (m/f)");
-        String gender = in.next();
-        gender = gender.equals(Person.getMaleGender()) ? Person.getMaleGender() : Person.getFemaleGender();
-        return new Person(name, age, gender);
+        return new Person(name, age);
+    }
+
+    public void addParent(Person p) {
+        if(parents[0] == null) {
+            parents[0] = p;
+        } else {
+            parents[1] = p;
+        }
     }
 
 }
-=======
-public class Tree {
-    
-}
->>>>>>> 6c2e86786972329ec8f0e62a61968f80da420f63
